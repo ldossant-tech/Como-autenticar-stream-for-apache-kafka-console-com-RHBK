@@ -1,0 +1,64 @@
+apiVersion: console.streamshub.github.com/v1alpha1
+kind: Console
+metadata:
+  name: console
+  namespace: kafka
+spec:
+  hostname: console-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com
+
+  security:
+    oidc:
+      authServerUrl: https://keycloak-service-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com/realms/kafka
+      clientId: streams-console
+
+      clientSecret:
+        valueFrom:
+          secretKeyRef:
+            name: my-oidc-secret
+            key: client-secret
+
+      trustStore:
+        type: PEM
+        content:
+          valueFrom:
+            configMapKeyRef:
+              name: keycloak-ca-cert
+              key: ca.crt
+
+      grantType: AUTHORIZATION_CODE
+      scopes: "openid profile email"
+
+    subjects:
+      - claim: groups
+        include:
+          - administrators
+        roleNames:
+          - administrators
+      - claim: groups
+        include:
+          - developers
+        roleNames:
+          - developers
+
+    roles:
+      - name: administrators
+        rules:
+          - resources:
+              - kafkas
+            privileges:
+              - "ALL"
+
+      - name: developers
+        rules:
+          - resources:
+              - kafkas
+            privileges:
+              - "ALL"
+
+  kafkaClusters:
+    - name: kafka-cluster
+      namespace: kafka
+      listener: plain
+      credentials:
+        kafkaUser:
+          name: console-user
