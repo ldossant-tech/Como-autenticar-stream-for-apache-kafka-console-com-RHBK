@@ -232,33 +232,40 @@ Agora crie o YAML do Console com autenticação OIDC.
 apiVersion: console.streamshub.github.com/v1alpha1
 kind: Console
 metadata:
-  name: my-console
+  name: console
+  namespace: kafka
 spec:
-  hostname: my-console.apps.exemplo.com
+  hostname: console-kafka.apps.cluster-pd2xp.pd2xp.sandbox5182.opentlc.com
 
   security:
     oidc:
-      authServerUrl: https://rhbk.apps.exemplo.com/realms/kafka
+      # ALTERAR: URL do seu realm no RHBK
+      authServerUrl: https://SEU-KEYCLOAK/realms/SEU-REALM
+
+      # ALTERAR: client criado no RHBK para o Console
       clientId: streams-console
+
       clientSecret:
         valueFrom:
           secretKeyRef:
+            # ALTERAR: nome do Secret com o client secret
             name: my-oidc-secret
             key: client-secret
 
-      # Use trustStore apenas se o certificado do Keycloak
-      # não for assinado por uma CA pública confiável
+      # Use apenas se o certificado do Keycloak não for público/confiável
       # trustStore:
       #   type: PEM
       #   content:
       #     valueFrom:
       #       configMapKeyRef:
-      #         name: my-oidc-configmap
-      #         key: ca.pem
+      #         name: keycloak-ca-cert
+      #         key: ca.crt
 
     subjects:
       - claim: groups
         include:
+          # ALTERAR: nome EXATO do grupo vindo no token
+          # Se o token vier como "/administrators", use "/administrators"
           - administrators
         roleNames:
           - administrators
@@ -272,12 +279,9 @@ spec:
               - "ALL"
 
   kafkaClusters:
-    - name: console-kafka
+    - name: kafka-cluster
       namespace: kafka
-      listener: secure
-      credentials:
-        kafkaUser:
-          name: console-kafka-user1
+      listener: plain
 ```
 
 Esse modelo segue a estrutura oficial do Console:
