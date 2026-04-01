@@ -227,7 +227,7 @@ O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` 
 
 Agora crie o YAML do Console com autenticação OIDC.
 
-utilize como exemplo o arquivo localizado [infra/01-kafka/kafka-console.yaml](https://github.com/ldossant-tech/Como-autenticar-stream-for-apache-kafka-console-com-RHBK/blob/4e0133f2a1414c84c550fec5d057ad808b3b6c45/infra/01-kafka/kafka-console.yaml)
+utilize como exemplo o arquivo [infra/01-kafka/kafka-console.yaml](https://github.com/ldossant-tech/Como-autenticar-stream-for-apache-kafka-console-com-RHBK/blob/4e0133f2a1414c84c550fec5d057ad808b3b6c45/infra/01-kafka/kafka-console.yaml)
 
 Esse modelo segue a estrutura oficial do Console:
 
