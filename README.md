@@ -95,11 +95,17 @@ No Admin Console do RHBK:
    - `developers`
    - `administrators`
 
+   ![Descrição da imagem](images/CreateGroups.png)
+
 4. Crie ou importe os usuários
+   
+   ![Descrição da imagem](images/CreateUsers.png)
 
 5. Coloque cada usuário no grupo correto
 
 No RHBK, grupos são hierárquicos e usuários podem herdar atributos e permissões dos grupos pai, o que ajuda bastante quando você quer administrar acesso por equipe em vez de usuário por usuário [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/server_administration_guide/assigning_permissions_using_roles_and_groups)
+
+   ![Descrição da imagem](images/UserGroup.png)
 
 ---
 
@@ -109,11 +115,13 @@ Para validar a integração, crie um usuário básico.
 
 ## Exemplo de usuário
 
-- **Username:** `teste`
-- **Senha:** `Senha123!`
+- **Username:** `admin1`
+- **Senha:** `admin`
 - **Grupo:** `administrators`
 
 > Para um primeiro teste, usar apenas o grupo `administrators` costuma ser o caminho mais simples.
+
+   ![Descrição da imagem](images/CreateCredential.png)
 
 ---
 
@@ -129,6 +137,8 @@ No realm `kafka`:
    - **Name:** `Streams Console`
 5. Clique em **Save**
 
+    ![Descrição da imagem](images/CreateClient1.png)
+
 Depois, na aba **Settings**, configure o seguinte:
 
 ## Configurações obrigatórias
@@ -140,6 +150,9 @@ Isso transforma o client em um client confidencial, adequado para aplicações s
 ### Standard Flow = ON
 
 Esse é o fluxo recomendado para login por navegador usando OIDC [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
+
+   ![Descrição da imagem](images/CreateClient2.png)
+
 
 ### Valid Redirect URIs
 
@@ -165,6 +178,8 @@ https://my-console.apps.exemplo.com
 
 Isso ajuda a evitar problemas de CORS no navegador [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
 
+   ![Descrição da imagem](images/CreateClient3.png)
+
 > **Dica importante:** em ambiente produtivo, use sempre **HTTPS** para as URLs do client. O guia do RHBK recomenda isso para fluxos baseados em redirecionamento [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/securing_applications_and_services_guide/oidc-layers-)
 
 ---
@@ -179,12 +194,24 @@ No RHBK, faça assim:
 2. Vá em **Client Scopes**
 3. Edite o escopo dedicado do client  
    Exemplo: `streams-console-dedicated`
-4. Vá em **Mappers**
+   
+   ![Descrição da imagem](images/UpdateClientScope.png)
+   
+5. Vá em **Mappers**
    `Configure a new mapper`
+
+   ![Descrição da imagem](images/ConfigureMapper.png)
+   
 6. Adicione um mapper do tipo **Group Membership**
+
+   ![Descrição da imagem](images/GroupMembership.png)
+   
 7. Configure:
    - **Token Claim Name** = `groups`
    - **Full group path** = **OFF**
+  
+   ![Descrição da imagem](images/AddMapper.png)
+     
 8. Salve
 
 Esse é o padrão recomendado para expor grupos como claim `groups` sem enviar o caminho completo do grupo [Source](https://docs.redhat.com/en/documentation/red_hat_satellite/6.18/html/configuring_authentication_for_red_hat_satellite_users/index)
@@ -206,6 +233,8 @@ No RHBK:
 1. Abra o client `streams-console`
 2. Vá na aba **Credentials**
 3. Copie o valor do **Client Secret**
+
+   ![Descrição da imagem](images/CopyClientId.png)
 
 Clientes confidenciais usam `client_secret` por padrão no RHBK [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
 
