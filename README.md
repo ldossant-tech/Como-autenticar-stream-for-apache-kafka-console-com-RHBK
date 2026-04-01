@@ -227,69 +227,7 @@ O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` 
 
 Agora crie o YAML do Console com autenticação OIDC.
 
-## Exemplo mínimo e funcional
-
-```yaml
-apiVersion: console.streamshub.github.com/v1alpha1
-kind: Console
-metadata:
-  name: console
-  namespace: kafka
-spec:
-  hostname: console-kafka.apps.cluster-pd2xp.pd2xp.sandbox5182.opentlc.com
-
-  security:
-    oidc:
-      # ALTERAR: URL do seu realm no RHBK
-      authServerUrl: https://SEU-KEYCLOAK/realms/SEU-REALM
-
-      # ALTERAR: client criado no RHBK para o Console
-      clientId: streams-console
-
-      clientSecret:
-        valueFrom:
-          secretKeyRef:
-            # ALTERAR: nome do Secret com o client secret
-            name: my-oidc-secret
-            key: client-secret
-
-      # Use apenas se o certificado do Keycloak não for público/confiável
-      # trustStore:
-      #   type: PEM
-      #   content:
-      #     valueFrom:
-      #       configMapKeyRef:
-      #         name: keycloak-ca-cert
-      #         key: ca.crt
-
-      grantType: AUTHORIZATION_CODE
-      scopes: "openid profile email"
-
-    subjects:
-      - claim: groups
-        include:
-          # ALTERAR: nome EXATO do grupo vindo no token
-          # Se o token vier como "/administrators", use "/administrators"
-          - administrators
-        roleNames:
-          - administrators
-
-    roles:
-      - name: administrators
-        rules:
-          - resources:
-              - kafkas
-            privileges:
-              - "ALL"
-
-  kafkaClusters:
-    - name: kafka-cluster
-      namespace: kafka
-      listener: plain
-      credentials:
-        kafkaUser:
-          name: console-user
-```
+utilize como exemplo o arquivo localizado [Kafka Console](https://github.com/ldossant-tech/Como-autenticar-stream-for-apache-kafka-console-com-RHBK/blob/4e0133f2a1414c84c550fec5d057ad808b3b6c45/infra/01-kafka/kafka-console.yaml)
 
 Esse modelo segue a estrutura oficial do Console:
 
