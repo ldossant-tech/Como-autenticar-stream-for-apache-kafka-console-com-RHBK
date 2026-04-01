@@ -178,11 +178,12 @@ No RHBK, faça assim:
 3. Edite o escopo dedicado do client  
    Exemplo: `streams-console-dedicated`
 4. Vá em **Mappers**
-5. Adicione um mapper do tipo **Group Membership**
-6. Configure:
+   `Configure a new mapper`
+6. Adicione um mapper do tipo **Group Membership**
+7. Configure:
    - **Token Claim Name** = `groups`
    - **Full group path** = **OFF**
-7. Salve
+8. Salve
 
 Esse é o padrão recomendado para expor grupos como claim `groups` sem enviar o caminho completo do grupo [Source](https://docs.redhat.com/en/documentation/red_hat_satellite/6.18/html/configuring_authentication_for_red_hat_satellite_users/index)
 
