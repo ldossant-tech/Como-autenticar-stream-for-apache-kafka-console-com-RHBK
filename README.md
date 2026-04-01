@@ -262,6 +262,9 @@ spec:
       #         name: keycloak-ca-cert
       #         key: ca.crt
 
+      grantType: AUTHORIZATION_CODE
+      scopes: "openid profile email"
+
     subjects:
       - claim: groups
         include:
@@ -283,6 +286,9 @@ spec:
     - name: kafka-cluster
       namespace: kafka
       listener: plain
+      credentials:
+        kafkaUser:
+          name: console-user
 ```
 
 Esse modelo segue a estrutura oficial do Console:
