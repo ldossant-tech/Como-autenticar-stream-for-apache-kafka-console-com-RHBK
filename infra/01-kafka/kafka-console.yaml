@@ -10,13 +10,11 @@ spec:
     oidc:
       authServerUrl: https://keycloak-service-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com/realms/kafka
       clientId: streams-console
-
       clientSecret:
         valueFrom:
           secretKeyRef:
             name: my-oidc-secret
             key: client-secret
-
       trustStore:
         type: PEM
         content:
@@ -24,7 +22,6 @@ spec:
             configMapKeyRef:
               name: keycloak-ca-cert
               key: ca.crt
-
       grantType: AUTHORIZATION_CODE
       scopes: "openid profile email"
 
@@ -46,14 +43,14 @@ spec:
           - resources:
               - kafkas
             privileges:
-              - "ALL"
+              - ALL
 
       - name: developers
         rules:
           - resources:
               - kafkas
             privileges:
-              - "ALL"
+              - ALL
 
   kafkaClusters:
     - name: kafka-cluster
@@ -62,3 +59,34 @@ spec:
       credentials:
         kafkaUser:
           name: console-user
+
+      security:
+        roles:
+          - name: developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                privileges:
+                  - GET
+                  - LIST
+
+          - name: administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes
+                  - nodes/configs
+                privileges:
+                  - GET
+                  - LIST
+              - resources:
+                  - consumerGroups
+                  - rebalances
+                privileges:
+                  - UPDATE
+
+
