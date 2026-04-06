@@ -1,92 +1,89 @@
-apiVersion: console.streamshub.github.com/v1alpha1
-kind: Console
-metadata:
-  name: console
-  namespace: kafka
-spec:
-  hostname: console-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com
+apiVersion: console.streamshub.github.com/v1alpha1 # Versão da API do recurso customizado da Streams Console
+kind: Console # Tipo do recurso que está sendo criado
+metadata: # Metadados do objeto Kubernetes
+  name: console # Nome do recurso Console
+  namespace: kafka # Namespace onde a Console será criada
+spec: # Especificação principal da Console
+  hostname: console-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com # Hostname público usado para acessar a interface web da Console
 
-  security:
-    oidc:
-      authServerUrl: https://keycloak-service-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com/realms/kafka
-      clientId: streams-console
-      clientSecret:
-        valueFrom:
-          secretKeyRef:
-            name: my-oidc-secret
-            key: client-secret
-      trustStore:
-        type: PEM
-        content:
-          valueFrom:
-            configMapKeyRef:
-              name: keycloak-ca-cert
-              key: ca.crt
-      grantType: AUTHORIZATION_CODE
-      scopes: "openid profile email"
+  security: # Bloco de segurança da Console
+    oidc: # Configuração de autenticação via OIDC (OpenID Connect)
+      authServerUrl: https://keycloak-service-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com/realms/kafka # URL do realm no RHBK/Keycloak usado para autenticar os usuários
+      clientId: streams-console # Client ID cadastrado no Keycloak para a aplicação Console
+      clientSecret: # Referência ao client secret do OIDC
+        valueFrom: # Indica que o valor será obtido de outro recurso Kubernetes
+          secretKeyRef: # Busca o valor em um Secret
+            name: my-oidc-secret # Nome do Secret que armazena o client secret
+            key: client-secret # Chave dentro do Secret que contém o client secret
+      trustStore: # Certificado/CA usado para confiar no servidor OIDC
+        type: PEM # Tipo do truststore; PEM indica certificado em texto
+        content: # Conteúdo do certificado da CA
+          valueFrom: # Indica que o conteúdo será lido de outro recurso Kubernetes
+            configMapKeyRef: # Busca o conteúdo em um ConfigMap
+              name: keycloak-ca-cert # Nome do ConfigMap que contém a CA do Keycloak
+              key: ca.crt # Chave dentro do ConfigMap que contém o certificado CA
+      grantType: AUTHORIZATION_CODE # Fluxo OIDC utilizado; padrão recomendado para aplicações web
+      scopes: "openid profile email" # Scopes solicitados no login; openid é obrigatório e profile/email trazem dados adicionais do usuário
 
-    subjects:
-      - claim: groups
-        include:
-          - administrators
-        roleNames:
-          - administrators
-      - claim: groups
-        include:
-          - developers
-        roleNames:
-          - developers
+    subjects: # Mapeamento de claims do token OIDC para roles internas da Console
+      - claim: groups # Claim do token JWT que será avaliado
+        include: # Valores do claim que devem casar
+          - administrators # Se o grupo do usuário contiver 'administrators'
+        roleNames: # Roles da Console atribuídas quando houver correspondência
+          - administrators # Atribui a role 'administrators' dentro da Console
+      - claim: groups # Claim do token JWT que será avaliado
+        include: # Valores do claim que devem casar
+          - developers # Se o grupo do usuário contiver 'developers'
+        roleNames: # Roles da Console atribuídas quando houver correspondência
+          - developers # Atribui a role 'developers' dentro da Console
 
-    roles:
-      - name: administrators
-        rules:
-          - resources:
-              - kafkas
-            privileges:
-              - ALL
+    roles: # Roles globais da Console, válidas para acesso geral aos clusters cadastrados
+      - name: administrators # Nome da role global de administradores
+        rules: # Regras associadas à role
+          - resources: # Recursos da Console afetados por esta regra
+              - kafkas # Recurso que representa os clusters Kafka visíveis na UI
+            privileges: # Privilégios concedidos sobre o recurso
+              - ALL # Permissão total sobre o recurso 'kafkas'
+      - name: developers # Nome da role global de desenvolvedores
+        rules: # Regras associadas à role
+          - resources: # Recursos da Console afetados por esta regra
+              - kafkas # Recurso que representa os clusters Kafka visíveis na UI
+            privileges: # Privilégios concedidos sobre o recurso
+              - ALL # Permissão total sobre o recurso 'kafkas'
 
-      - name: developers
-        rules:
-          - resources:
-              - kafkas
-            privileges:
-              - ALL
+  kafkaClusters: # Lista de clusters Kafka que a Console irá gerenciar/exibir
+    - name: kafka-cluster # Nome lógico do cluster dentro da configuração da Console
+      namespace: kafka # Namespace onde o cluster Kafka está localizado
+      listener: plain # Listener do Kafka que a Console usará para se conectar ao cluster
+      credentials: # Credenciais usadas pela Console para conectar no Kafka
+        kafkaUser: # Tipo de credencial baseada em KafkaUser do Strimzi
+          name: console-user # Nome do KafkaUser usado pela Console para autenticar no cluster Kafka
 
-  kafkaClusters:
-    - name: kafka-cluster
-      namespace: kafka
-      listener: plain
-      credentials:
-        kafkaUser:
-          name: console-user
-
-      security:
-        roles:
-          - name: developers
-            rules:
-              - resources:
-                  - topics
-                  - topics/records
-                privileges:
-                  - GET
-                  - LIST
-
-          - name: administrators
-            rules:
-              - resources:
-                  - topics
-                  - topics/records
-                  - consumerGroups
-                  - rebalances
-                  - nodes
-                  - nodes/configs
-                privileges:
-                  - GET
-                  - LIST
-              - resources:
-                  - consumerGroups
-                  - rebalances
-                privileges:
-                  - UPDATE
-
+      security: # Segurança específica deste cluster Kafka
+        roles: # Roles aplicadas dentro deste cluster específico
+          - name: developers # Role do cluster para usuários developers
+            rules: # Regras específicas para developers neste cluster
+              - resources: # Recursos permitidos para developers
+                  - topics # Permite visualizar/listar tópicos
+                  - topics/records # Permite visualizar registros/mensagens dos tópicos
+                privileges: # Privilégios concedidos aos resources acima
+                  - GET # Permite consultar detalhes de um recurso específico
+                  - LIST # Permite listar coleções de recursos
+          - name: administrators # Role do cluster para usuários administradores
+            rules: # Regras específicas para administradores neste cluster
+              - resources: # Recursos permitidos para administradores
+                  - topics # Permite visualizar/listar tópicos
+                  - topics/records # Permite visualizar registros/mensagens dos tópicos
+                  - consumerGroups # Permite visualizar consumer groups
+                  - rebalances # Permite visualizar operações de rebalance
+                  - nodes # Tentativa de liberar acesso à tela/lista de nodes
+                  - nodes/configs # Permite visualizar configurações/informações de nodes
+                privileges: # Privilégios concedidos aos resources acima
+                  - GET # Permite consultar detalhes de um recurso específico
+                  - LIST # Permite listar coleções de recursos
+              - resources: # Regra separada para ações administrativas
+                  - consumerGroups # Recurso de consumer groups
+                  - rebalances # Recurso de rebalance
+                privileges: # Privilégios concedidos para esses recursos
+                  - UPDATE # Permite executar alterações/ações administrativas nesses recursos
 
