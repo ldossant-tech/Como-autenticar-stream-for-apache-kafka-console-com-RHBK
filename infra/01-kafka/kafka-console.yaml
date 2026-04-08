@@ -66,6 +66,7 @@ spec: # Especificação principal da Console
               - resources: # Recursos permitidos para developers
                   - topics # Permite visualizar/listar tópicos
                   - topics/records # Permite visualizar registros/mensagens dos tópicos
+                  - consumerGroups # Permite visualizar consumer groups
                 privileges: # Privilégios concedidos aos resources acima
                   - GET # Permite consultar detalhes de um recurso específico
                   - LIST # Permite listar coleções de recursos
