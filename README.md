@@ -361,22 +361,7 @@ Verifique:
 - URL pública do Console
 - URL do realm do Keycloak
 
----
-
-# Resumo rápido
-
-Se você quiser fazer a implementação mínima, basta garantir estes 4 pontos:
-
-1. Criar o client OIDC no Keycloak
-2. Fazer o token sair com `groups`
-3. Mapear esse grupo em `subjects`
-4. Dar permissão com `roles`
-
----
-
 # Referências
 
 - [Using the Streams for Apache Kafka Console](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
-- [Managing OpenID Connect and SAML Clients - Red Hat build of Keycloak](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
-- [Secure applications and services with OpenID Connect - Red Hat build of Keycloak](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/securing_applications_and_services_guide/oidc-layers-)
-- [Assigning permissions using roles and groups - Red Hat build of Keycloak](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/server_administration_guide/assigning_permissions_using_roles_and_groups)
+- [Deploying and connecting the console to a Kafka cluster](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index#proc-connecting-console-str)
