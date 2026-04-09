@@ -249,7 +249,7 @@ Esse modelo segue a estrutura oficial do Console:
 
 ---
 
-# 9) Aplique a configuração
+# 8) Aplique a configuração
 Lembre de verificar e inserir os dados corretos dentro do kafka-console.yaml
 
 Execute:
@@ -268,7 +268,7 @@ A instalação e a configuração do Console são feitas via recurso `Console`, 
 
 ---
 
-# 11) Teste o login
+# 9) Teste o login
 
 1. Abra a URL pública do Console
 2. Clique para fazer login
