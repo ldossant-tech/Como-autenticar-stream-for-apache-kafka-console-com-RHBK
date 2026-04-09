@@ -276,8 +276,8 @@ A instalação e a configuração do Console são feitas via recurso `Console`, 
 
 ## Exemplo
 
-- **usuário:** `teste`
-- **senha:** `Senha123!`
+- **usuário:** `admin1`
+- **senha:** `admin`
 
 Se o claim `groups` estiver vindo corretamente no token e o valor estiver alinhado com o `subjects.include`, o usuário entrará no Console com a role configurada [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
