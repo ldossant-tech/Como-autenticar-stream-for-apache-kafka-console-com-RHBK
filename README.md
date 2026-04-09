@@ -76,15 +76,11 @@ No Admin Console do RHBK:
 
    ![Descrição da imagem](images/CreateGroups.png)
 
-4. Atribua roles aos grupos definidos
-
-   
-
-5. Crie ou importe os usuários
+4. Crie ou importe os usuários
    
    ![Descrição da imagem](images/CreateUsers.png)
 
-6. Coloque cada usuário no grupo correto
+5. Coloque cada usuário no grupo correto
 
 No RHBK, grupos são hierárquicos e usuários podem herdar atributos e permissões dos grupos pai, o que ajuda bastante quando você quer administrar acesso por equipe em vez de usuário por usuário [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/server_administration_guide/assigning_permissions_using_roles_and_groups)
 
