@@ -249,22 +249,13 @@ Esse modelo segue a estrutura oficial do Console:
 
 ---
 
-# 8) Salve o arquivo
-
-Salve esse conteúdo em um arquivo chamado, por exemplo:
-
-```text
-console-oidc.yaml
-```
-
----
-
 # 9) Aplique a configuração
+Lembre de verificar e inserir os dados corretos dentro do kafka-console.yaml
 
 Execute:
 
 ```bash
-oc apply -f console-oidc.yaml -n <namespace-da-console>
+oc apply -f kafka-console.yaml -n <namespace-da-console>
 ```
 
 Depois verifique se o pod do Console está rodando:
