@@ -48,40 +48,19 @@ A documentação do Console descreve a implantação e a configuração por meio
 
 Você vai seguir esta ordem:
 
-1. Separar os dados que serão usados
-2. Criar o realm no RHBK
-3. Criar um grupo e um usuário simples
-4. Criar o client OIDC do Console
-5. Configurar o mapper para enviar `groups`
-6. Copiar o client secret
-7. Criar o Secret no OpenShift
-8. Configurar o recurso `Console`
-9. Aplicar a configuração
-10. Testar o login
+1. Criar o realm no RHBK
+2. Criar um grupo e um usuário simples
+3. Criar o client OIDC do Console
+4. Configurar o mapper para enviar `groups`
+5. Copiar o client secret
+6. Criar o Secret no OpenShift
+7. Configurar o recurso `Console`
+8. Aplicar a configuração
+9. Testar o login
 
 ---
 
-# 1) Separe os 4 dados que você vai usar
-
-Antes de configurar, defina estes valores:
-
-- **URL do RHBK**
-- **Realm** que vai autenticar o Console
-- **URL pública do Console**
-- **Nome do client OIDC**
-
-## Exemplo
-
-```text
-RHBK URL: https://keycloak.apps.exemplo.com
-Realm: kafka
-Console URL: https://console-kafka.apps.exemplo.com
-Client ID: streams-console
-```
-
----
-
-# 2) Crie um realm no RHBK
+# 1) Crie um realm no RHBK
 
 No Admin Console do RHBK:
 
@@ -113,7 +92,7 @@ No RHBK, grupos são hierárquicos e usuários podem herdar atributos e permiss�
 
 ---
 
-# 3) Crie um usuário simples para teste
+# 2) Crie um usuário simples para teste
 
 Para validar a integração, crie um usuário básico.
 
@@ -129,7 +108,7 @@ Para validar a integração, crie um usuário básico.
 
 ---
 
-# 4) Crie o client OIDC do Console no RHBK
+# 3) Crie o client OIDC do Console no RHBK
 
 No realm `kafka`:
 
@@ -188,7 +167,7 @@ Isso ajuda a evitar problemas de CORS no navegador [Source](https://docs.redhat.
 
 ---
 
-# 5) Faça o RHBK enviar o claim `groups` no token
+# 4) Faça o RHBK enviar o claim `groups` no token
 
 O Console consegue autorizar usuários com base no claim `groups`. Para isso, o token emitido pelo RHBK precisa conter esse claim. A documentação do Console menciona explicitamente que a autorização baseada em grupo depende de um claim como `groups` no token [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
@@ -228,7 +207,7 @@ Esse é o padrão recomendado para expor grupos como claim `groups` sem enviar o
 
 ---
 
-# 6) Copie o client secret do RHBK
+# 5) Copie o client secret do RHBK
 
 Como o Console usa `clientId` + `clientSecret`, pegue o secret do client criado.
 
@@ -244,7 +223,7 @@ Clientes confidenciais usam `client_secret` por padrão no RHBK [Source](https:/
 
 ---
 
-# 7) Crie o Secret no OpenShift com o client secret
+# 6) Crie o Secret no OpenShift com o client secret
 
 No namespace onde o Console está rodando, crie um Secret para armazenar o `client_secret`.
 
@@ -258,7 +237,7 @@ O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` 
 
 ---
 
-# 8) Configure o recurso `Console`
+# 7) Configure o recurso `Console`
 
 Agora crie o YAML do Console com autenticação OIDC.
 
@@ -274,7 +253,7 @@ Esse modelo segue a estrutura oficial do Console:
 
 ---
 
-# 9) Salve o arquivo
+# 8) Salve o arquivo
 
 Salve esse conteúdo em um arquivo chamado, por exemplo:
 
@@ -284,7 +263,7 @@ console-oidc.yaml
 
 ---
 
-# 10) Aplique a configuração
+# 9) Aplique a configuração
 
 Execute:
 
