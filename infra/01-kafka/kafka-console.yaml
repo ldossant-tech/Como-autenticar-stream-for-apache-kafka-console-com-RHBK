@@ -4,11 +4,11 @@ metadata: # Metadados do objeto Kubernetes
   name: console # Nome do recurso Console
   namespace: kafka # Namespace onde a Console será criada
 spec: # Especificação principal da Console
-  hostname: console-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com # Hostname público usado para acessar a interface web da Console
+  hostname: <HOSTNAME># Hostname público usado para acessar a interface web da Console
 
   security: # Bloco de segurança da Console
     oidc: # Configuração de autenticação via OIDC (OpenID Connect)
-      authServerUrl: https://keycloak-service-kafka.apps.ldossant.vmware.tamlab.rdu2.redhat.com/realms/kafka # URL do realm no RHBK/Keycloak usado para autenticar os usuários
+      authServerUrl: <URL-KEYCLOAK>/realms/kafka # URL do realm no RHBK/Keycloak usado para autenticar os usuários
       clientId: streams-console # Client ID cadastrado no Keycloak para a aplicação Console
       clientSecret: # Referência ao client secret do OIDC
         valueFrom: # Indica que o valor será obtido de outro recurso Kubernetes
