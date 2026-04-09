@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Este guia mostra, de forma **direta, intuitiva e prática**, como configurar o **Red Hat build of Keycloak (RHBK)** para autenticar usuários no **Streams for Apache Kafka Console** usando **OIDC**. A autenticação da interface pode ser integrada com um provedor OIDC, e a autorização pode ser feita por grupos usando `security.oidc`, `subjects` e `roles` no recurso `Console` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
+Este laboratório tem como objetivo demonstrar praticamente como configurar o **Red Hat build of Keycloak (RHBK)** para autenticar usuários no **Streams for Apache Kafka Console** usando **OIDC**. A autenticação da interface pode ser integrada com um provedor OIDC, e a autorização pode ser feita por grupos usando `security.oidc`, `subjects` e `roles` no recurso `Console` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
 Este passo a passo foi pensado para um cenário **mínimo e funcional**:
 
