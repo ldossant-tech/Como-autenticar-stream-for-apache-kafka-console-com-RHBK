@@ -182,20 +182,6 @@ Isso ajuda a evitar problemas de CORS no navegador [Source](https://docs.redhat.
 
 ---
 
-# Crie o Secret no OpenShift com o client secret
-
-No namespace onde o Console está rodando, crie um Secret para armazenar o `client_secret`.
-
-```bash
-oc create secret generic my-oidc-secret \
-  --from-literal=client-secret='<SEU_CLIENT_SECRET>' \
-  -n <namespace-da-console>
-```
-
-O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
-
----
-
 # Copie o client secret do RHBK
 
 Como o Console usa `clientId` + `clientSecret`, pegue o secret do client criado.
@@ -209,6 +195,20 @@ No RHBK:
    ![Descrição da imagem](images/CopyClientId.png)
 
 Clientes confidenciais usam `client_secret` por padrão no RHBK [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
+
+---
+
+# Crie o Secret no OpenShift com o client secret
+
+No namespace onde o Console está rodando, crie um Secret para armazenar o `client_secret`.
+
+```bash
+oc create secret generic my-oidc-secret \
+  --from-literal=client-secret='<SEU_CLIENT_SECRET>' \
+  -n <namespace-da-console>
+```
+
+O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
 ---
 
