@@ -196,6 +196,22 @@ O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` 
 
 ---
 
+# Copie o client secret do RHBK
+
+Como o Console usa `clientId` + `clientSecret`, pegue o secret do client criado.
+
+No RHBK:
+
+1. Abra o client `streams-console`
+2. Vá na aba **Credentials**
+3. Copie o valor do **Client Secret**
+
+   ![Descrição da imagem](images/CopyClientId.png)
+
+Clientes confidenciais usam `client_secret` por padrão no RHBK [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
+
+---
+
 # Configure o recurso `Console`
 
 Agora crie o YAML do Console com autenticação OIDC.
@@ -249,22 +265,6 @@ Esse é o padrão recomendado para expor grupos como claim `groups` sem enviar o
 >
 > - ou você desliga **Full group path**
 > - ou ajusta o `subjects.include` no Console para usar exatamente o valor do token
-
----
-
-# Copie o client secret do RHBK
-
-Como o Console usa `clientId` + `clientSecret`, pegue o secret do client criado.
-
-No RHBK:
-
-1. Abra o client `streams-console`
-2. Vá na aba **Credentials**
-3. Copie o valor do **Client Secret**
-
-   ![Descrição da imagem](images/CopyClientId.png)
-
-Clientes confidenciais usam `client_secret` por padrão no RHBK [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
 
 ---
 
