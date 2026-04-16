@@ -135,33 +135,7 @@ Esse é o fluxo recomendado para login por navegador usando OIDC [Source](https:
    ![Descrição da imagem](images/CreateClient2.png)
 
 
-### Valid Redirect URIs
-
-Cadastre a URI de callback usada pelo Console.
-
-## Exemplo
-
-```text
-https://my-console.apps.exemplo.com/api/auth/callback/oidc
-```
-
-O RHBK faz comparação exata e sensível a maiúsculas/minúsculas para `Valid Redirect URIs`, então evite curingas muito amplos em produção [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
-
-### Web Origins
-
-Cadastre a origem pública do Console.
-
-## Exemplo
-
-```text
-https://my-console.apps.exemplo.com
-```
-
-Isso ajuda a evitar problemas de CORS no navegador [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
-
-   ![Descrição da imagem](images/CreateClient3.png)
-
-> **Dica importante:** em ambiente produtivo, use sempre **HTTPS** para as URLs do client. O guia do RHBK recomenda isso para fluxos baseados em redirecionamento [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/securing_applications_and_services_guide/oidc-layers-)
+Clique em prosseguir e ignore nest momento as configurações de ValidUri e WebOrigins
 
 ---
 
@@ -226,6 +200,37 @@ Esse modelo segue a estrutura oficial do Console:
 
 > Se você quiser permissões mais finas, pode restringir `resources`, `resourceNames` e `privileges`. A documentação do Console mostra exemplos com filtros por nome, wildcard e regex [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
+---
+
+# Adicione as configurações de callbak e web origins em seu client
+
+### Valid Redirect URIs
+
+Cadastre a URI de callback usada pelo Console.
+
+## Exemplo
+
+```text
+https://my-console.apps.exemplo.com/api/auth/callback/oidc
+```
+
+O RHBK faz comparação exata e sensível a maiúsculas/minúsculas para `Valid Redirect URIs`, então evite curingas muito amplos em produção [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
+
+### Web Origins
+
+Cadastre a origem pública do Console.
+
+## Exemplo
+
+```text
+https://my-console.apps.exemplo.com
+```
+
+Isso ajuda a evitar problemas de CORS no navegador [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
+
+   ![Descrição da imagem](images/CreateClient3.png)
+
+> **Dica importante:** em ambiente produtivo, use sempre **HTTPS** para as URLs do client. O guia do RHBK recomenda isso para fluxos baseados em redirecionamento [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.0/html/securing_applications_and_services_guide/oidc-layers-)
 ---
 
 # Faça o RHBK enviar o claim `groups` no token
