@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 apiVersion: console.streamshub.github.com/v1alpha1 # Versão da API do recurso customizado da Streams Console
 kind: Console # Tipo do recurso que está sendo criado
 metadata: # Metadados do objeto Kubernetes
