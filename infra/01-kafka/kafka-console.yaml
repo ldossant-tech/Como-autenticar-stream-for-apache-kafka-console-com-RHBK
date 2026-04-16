@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 apiVersion: console.streamshub.github.com/v1alpha1 # Versão da API do recurso customizado da Streams Console
 kind: Console # Tipo do recurso que está sendo criado
 metadata: # Metadados do objeto Kubernetes
@@ -24,41 +25,64 @@ spec: # Especificação principal da Console
               key: ca.crt # Chave dentro do ConfigMap que contém o certificado CA
       grantType: AUTHORIZATION_CODE # Fluxo OIDC utilizado; padrão recomendado para aplicações web
       scopes: "openid profile email" # Scopes solicitados no login; openid é obrigatório e profile/email trazem dados adicionais do usuário
+=======
+apiVersion: console.streamshub.github.com/v1alpha1
+kind: Console
+metadata:
+  name: console
+  namespace: kafka
+spec:
+  hostname: console-kafka.apps.cluster-bg4d4.bg4d4.sandbox3088.opentlc.com
 
-    subjects: # Mapeamento de claims do token OIDC para roles internas da Console
-      - claim: groups # Claim do token JWT que será avaliado
-        include: # Valores do claim que devem casar
-          - administrators # Se o grupo do usuário contiver 'administrators'
-        roleNames: # Roles da Console atribuídas quando houver correspondência
-          - administrators # Atribui a role 'administrators' dentro da Console
-      - claim: groups # Claim do token JWT que será avaliado
-        include: # Valores do claim que devem casar
-          - developers # Se o grupo do usuário contiver 'developers'
-        roleNames: # Roles da Console atribuídas quando houver correspondência
-          - developers # Atribui a role 'developers' dentro da Console
+  security:
+    oidc:
+      authServerUrl: https://keycloak-service-kafka.apps.cluster-bg4d4.bg4d4.sandbox3088.opentlc.com/realms/Kafka
+      clientId: streams-console
+      clientSecret:
+        valueFrom:
+          secretKeyRef:
+            name: my-oidc-secret
+            key: client-secret
+>>>>>>> 55d99e0 (fix)
 
-    roles: # Roles globais da Console, válidas para acesso geral aos clusters cadastrados
-      - name: administrators # Nome da role global de administradores
-        rules: # Regras associadas à role
-          - resources: # Recursos da Console afetados por esta regra
-              - kafkas # Recurso que representa os clusters Kafka visíveis na UI
-            privileges: # Privilégios concedidos sobre o recurso
-              - ALL # Permissão total sobre o recurso 'kafkas'
-      - name: developers # Nome da role global de desenvolvedores
-        rules: # Regras associadas à role
-          - resources: # Recursos da Console afetados por esta regra
-              - kafkas # Recurso que representa os clusters Kafka visíveis na UI
-            privileges: # Privilégios concedidos sobre o recurso
-              - ALL # Permissão total sobre o recurso 'kafkas'
+# caso seja necessario certificado para confiar no rhbk     
+#      trustStore:
+#        type: PEM
+#        content:
+#          valueFrom:
+#            configMapKeyRef:
+#              name: keycloak-ca-cert
+#              key: ca.crt
+      grantType: AUTHORIZATION_CODE
+      scopes: "openid profile email"
 
-  kafkaClusters: # Lista de clusters Kafka que a Console irá gerenciar/exibir
-    - name: kafka-cluster # Nome lógico do cluster dentro da configuração da Console
-      namespace: kafka # Namespace onde o cluster Kafka está localizado
-      listener: plain # Listener do Kafka que a Console usará para se conectar ao cluster
-      credentials: # Credenciais usadas pela Console para conectar no Kafka
-        kafkaUser: # Tipo de credencial baseada em KafkaUser do Strimzi
-          name: console-user # Nome do KafkaUser usado pela Console para autenticar no cluster Kafka
+    subjects:
+      - claim: groups
+        include:
+          - administrators
+        roleNames:
+          - administrators
+      - claim: groups
+        include:
+          - developers
+        roleNames:
+          - developers
 
+    roles:
+      - name: administrators
+        rules:
+          - resources:
+              - kafkas
+            privileges:
+              - ALL
+      - name: developers
+        rules:
+          - resources:
+              - kafkas
+            privileges:
+              - ALL
+
+<<<<<<< HEAD
       security: # Segurança específica deste cluster Kafka
         roles: # Roles aplicadas dentro deste cluster específico
           - name: developers # Role do cluster para usuários developers
@@ -87,4 +111,41 @@ spec: # Especificação principal da Console
                   - rebalances # Recurso de rebalance
                 privileges: # Privilégios concedidos para esses recursos
                   - UPDATE # Permite executar alterações/ações administrativas nesses recursos
+=======
+  kafkaClusters:
+    - name: kafka-cluster
+      namespace: kafka
+      listener: plain
+      credentials:
+        kafkaUser:
+          name: app-user
+>>>>>>> 55d99e0 (fix)
 
+      security:
+        roles:
+          - name: developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                privileges:
+                  - GET
+                  - LIST
+          - name: administrators
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes
+                  - nodes/configs
+                privileges:
+                  - GET
+                  - LIST
+              - resources:
+                  - consumerGroups
+                  - rebalances
+                privileges:
+                  - UPDATE
