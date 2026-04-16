@@ -106,23 +106,6 @@ Para validar a integração, crie um usuário básico.
    ![Descrição da imagem](images/CreateCredential.png)
 
 ---
-
-# Aplique a configuração
-Lembre de verificar e inserir os dados corretos dentro do kafka-console.yaml
-
-Execute:
-
-```bash
-oc apply -f kafka-console.yaml -n <namespace-da-console>
-```
-
-Depois verifique se o pod do Console está rodando:
-
-```bash
-oc get pods -n <namespace-da-console>
-```
-
----
 # Crie o client OIDC do Console no RHBK
 
 No realm `kafka`:
@@ -209,6 +192,23 @@ oc create secret generic my-oidc-secret \
 ```
 
 O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
+
+---
+
+# Aplique a configuração
+Lembre de verificar e inserir os dados corretos dentro do kafka-console.yaml
+
+Execute:
+
+```bash
+oc apply -f kafka-console.yaml -n <namespace-da-console>
+```
+
+Depois verifique se o pod do Console está rodando:
+
+```bash
+oc get pods -n <namespace-da-console>
+```
 
 ---
 
