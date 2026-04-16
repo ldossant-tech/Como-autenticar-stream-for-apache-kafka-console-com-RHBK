@@ -59,40 +59,11 @@ Você vai seguir esta ordem:
 9. Testar o login
 
 ---
-# 1) Aplique a configuração
-Lembre de verificar e inserir os dados corretos dentro do kafka-console.yaml
-
-Execute:
-
-```bash
-oc apply -f kafka-console.yaml -n <namespace-da-console>
-```
-
-Depois verifique se o pod do Console está rodando:
-
-```bash
-oc get pods -n <namespace-da-console>
-```
-
-# 2) Configure o recurso `Console`
-
-Agora crie o YAML do Console com autenticação OIDC.
-
-utilize como exemplo o arquivo [infra/01-kafka/kafka-console.yaml](https://github.com/ldossant-tech/Como-autenticar-stream-for-apache-kafka-console-com-RHBK/blob/4e0133f2a1414c84c550fec5d057ad808b3b6c45/infra/01-kafka/kafka-console.yaml)
-
-Esse modelo segue a estrutura oficial do Console:
-
-- `security.oidc` define o provedor OIDC
-- `subjects` mapeia claims ou usuários para papéis
-- `roles` define o que cada papel pode fazer [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
-
-> Se você quiser permissões mais finas, pode restringir `resources`, `resourceNames` e `privileges`. A documentação do Console mostra exemplos com filtros por nome, wildcard e regex [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
-
 
 A instalação e a configuração do Console são feitas via recurso `Console`, aplicado com `oc apply` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
 
-# 3) Crie um realm no RHBK
+# Crie um realm no RHBK
 
 No Admin Console do RHBK:
 
@@ -120,7 +91,7 @@ No RHBK, grupos são hierárquicos e usuários podem herdar atributos e permiss�
 
 ---
 
-# 4) Crie um usuário simples para teste
+# Crie um usuário simples para teste
 
 Para validar a integração, crie um usuário básico.
 
@@ -136,7 +107,23 @@ Para validar a integração, crie um usuário básico.
 
 ---
 
-# 5) Crie o client OIDC do Console no RHBK
+# Aplique a configuração
+Lembre de verificar e inserir os dados corretos dentro do kafka-console.yaml
+
+Execute:
+
+```bash
+oc apply -f kafka-console.yaml -n <namespace-da-console>
+```
+
+Depois verifique se o pod do Console está rodando:
+
+```bash
+oc get pods -n <namespace-da-console>
+```
+
+---
+# Crie o client OIDC do Console no RHBK
 
 No realm `kafka`:
 
@@ -195,7 +182,37 @@ Isso ajuda a evitar problemas de CORS no navegador [Source](https://docs.redhat.
 
 ---
 
-# 6) Faça o RHBK enviar o claim `groups` no token
+# Crie o Secret no OpenShift com o client secret
+
+No namespace onde o Console está rodando, crie um Secret para armazenar o `client_secret`.
+
+```bash
+oc create secret generic my-oidc-secret \
+  --from-literal=client-secret='<SEU_CLIENT_SECRET>' \
+  -n <namespace-da-console>
+```
+
+O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
+
+---
+
+# Configure o recurso `Console`
+
+Agora crie o YAML do Console com autenticação OIDC.
+
+utilize como exemplo o arquivo [infra/01-kafka/kafka-console.yaml](https://github.com/ldossant-tech/Como-autenticar-stream-for-apache-kafka-console-com-RHBK/blob/4e0133f2a1414c84c550fec5d057ad808b3b6c45/infra/01-kafka/kafka-console.yaml)
+
+Esse modelo segue a estrutura oficial do Console:
+
+- `security.oidc` define o provedor OIDC
+- `subjects` mapeia claims ou usuários para papéis
+- `roles` define o que cada papel pode fazer [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
+
+> Se você quiser permissões mais finas, pode restringir `resources`, `resourceNames` e `privileges`. A documentação do Console mostra exemplos com filtros por nome, wildcard e regex [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
+
+---
+
+# Faça o RHBK enviar o claim `groups` no token
 
 O Console consegue autorizar usuários com base no claim `groups`. Para isso, o token emitido pelo RHBK precisa conter esse claim. A documentação do Console menciona explicitamente que a autorização baseada em grupo depende de um claim como `groups` no token [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
@@ -235,7 +252,7 @@ Esse é o padrão recomendado para expor grupos como claim `groups` sem enviar o
 
 ---
 
-# 7) Copie o client secret do RHBK
+# Copie o client secret do RHBK
 
 Como o Console usa `clientId` + `clientSecret`, pegue o secret do client criado.
 
@@ -251,21 +268,7 @@ Clientes confidenciais usam `client_secret` por padrão no RHBK [Source](https:/
 
 ---
 
-# 8) Crie o Secret no OpenShift com o client secret
-
-No namespace onde o Console está rodando, crie um Secret para armazenar o `client_secret`.
-
-```bash
-oc create secret generic my-oidc-secret \
-  --from-literal=client-secret='<SEU_CLIENT_SECRET>' \
-  -n <namespace-da-console>
-```
-
-O modelo oficial do Console usa esse mesmo padrão com `valueFrom.secretKeyRef` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
-
----
-
-# 9) Teste o login
+# Teste o login
 
 1. Abra a URL pública do Console
 2. Clique para fazer login
