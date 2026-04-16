@@ -28,38 +28,6 @@ Ao final deste guia, você terá:
 
 ---
 
-## Pré-requisitos
-
-Antes de começar, garanta que você tem:
-
-- acesso ao **RHBK Admin Console**
-- acesso ao cluster **OpenShift**
-- o comando `oc` configurado
-- o **Streams for Apache Kafka Console** já instalado
-- um namespace onde o Console roda
-- a URL pública do Console
-- a URL pública do Keycloak
-
-A documentação do Console descreve a implantação e a configuração por meio do recurso `Console` aplicado com `oc apply` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
-
----
-
-## Visão geral do passo a passo
-
-Você vai seguir esta ordem:
-
-1. Criar o realm no RHBK
-2. Criar um grupo e um usuário simples
-3. Criar o client OIDC do Console
-4. Configurar o mapper para enviar `groups`
-5. Copiar o client secret
-6. Criar o Secret no OpenShift
-7. Configurar o recurso `Console`
-8. Aplicar a configuração
-9. Testar o login
-
----
-
 A instalação e a configuração do Console são feitas via recurso `Console`, aplicado com `oc apply` [Source](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
 
 
@@ -135,7 +103,7 @@ Esse é o fluxo recomendado para login por navegador usando OIDC [Source](https:
    ![Descrição da imagem](images/CreateClient2.png)
 
 
-### Clique em prosseguir e ignore neste momento as configurações de ValidUri e WebOrigins
+### Clique em prosseguir e ignore neste momento as configurações de callback (Valid redirect URIs) e Web origins
 
 ---
 
