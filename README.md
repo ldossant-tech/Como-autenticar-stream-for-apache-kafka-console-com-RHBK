@@ -135,7 +135,7 @@ Esse é o fluxo recomendado para login por navegador usando OIDC [Source](https:
    ![Descrição da imagem](images/CreateClient2.png)
 
 
-Clique em prosseguir e ignore nest momento as configurações de ValidUri e WebOrigins
+### Clique em prosseguir e ignore neste momento as configurações de ValidUri e WebOrigins
 
 ---
 
