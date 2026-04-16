@@ -5,45 +5,18 @@ metadata: # Metadados do objeto Kubernetes
   name: console # Nome do recurso Console
   namespace: kafka # Namespace onde a Console será criada
 spec: # Especificação principal da Console
-  hostname: <HOSTNAME># Hostname público usado para acessar a interface web da Console
+  hostname: console-kafka.apps.cluster-bg4d4.bg4d4.sandbox3088.opentlc.com
 
   security: # Bloco de segurança da Console
     oidc: # Configuração de autenticação via OIDC (OpenID Connect)
-      authServerUrl: <URL-KEYCLOAK>/realms/kafka # URL do realm no RHBK/Keycloak usado para autenticar os usuários
+      authServerUrl: https://keycloak-service-kafka.apps.cluster-bg4d4.bg4d4.sandbox3088.opentlc.com/realms/Kafka
+      #authServerUrl: <URL-KEYCLOAK>/realms/kafka # URL do realm no RHBK/Keycloak usado para autenticar os usuários
       clientId: streams-console # Client ID cadastrado no Keycloak para a aplicação Console
       clientSecret: # Referência ao client secret do OIDC
         valueFrom: # Indica que o valor será obtido de outro recurso Kubernetes
           secretKeyRef: # Busca o valor em um Secret
             name: my-oidc-secret # Nome do Secret que armazena o client secret
             key: client-secret # Chave dentro do Secret que contém o client secret
-      trustStore: # Certificado/CA usado para confiar no servidor OIDC
-        type: PEM # Tipo do truststore; PEM indica certificado em texto
-        content: # Conteúdo do certificado da CA
-          valueFrom: # Indica que o conteúdo será lido de outro recurso Kubernetes
-            configMapKeyRef: # Busca o conteúdo em um ConfigMap
-              name: keycloak-ca-cert # Nome do ConfigMap que contém a CA do Keycloak
-              key: ca.crt # Chave dentro do ConfigMap que contém o certificado CA
-      grantType: AUTHORIZATION_CODE # Fluxo OIDC utilizado; padrão recomendado para aplicações web
-      scopes: "openid profile email" # Scopes solicitados no login; openid é obrigatório e profile/email trazem dados adicionais do usuário
-=======
-apiVersion: console.streamshub.github.com/v1alpha1
-kind: Console
-metadata:
-  name: console
-  namespace: kafka
-spec:
-  hostname: console-kafka.apps.cluster-bg4d4.bg4d4.sandbox3088.opentlc.com
-
-  security:
-    oidc:
-      authServerUrl: https://keycloak-service-kafka.apps.cluster-bg4d4.bg4d4.sandbox3088.opentlc.com/realms/Kafka
-      clientId: streams-console
-      clientSecret:
-        valueFrom:
-          secretKeyRef:
-            name: my-oidc-secret
-            key: client-secret
->>>>>>> 55d99e0 (fix)
 
 # caso seja necessario certificado para confiar no rhbk     
 #      trustStore:
@@ -82,36 +55,6 @@ spec:
             privileges:
               - ALL
 
-<<<<<<< HEAD
-      security: # Segurança específica deste cluster Kafka
-        roles: # Roles aplicadas dentro deste cluster específico
-          - name: developers # Role do cluster para usuários developers
-            rules: # Regras específicas para developers neste cluster
-              - resources: # Recursos permitidos para developers
-                  - topics # Permite visualizar/listar tópicos
-                  - topics/records # Permite visualizar registros/mensagens dos tópicos
-                  - consumerGroups # Permite visualizar consumer groups
-                privileges: # Privilégios concedidos aos resources acima
-                  - GET # Permite consultar detalhes de um recurso específico
-                  - LIST # Permite listar coleções de recursos
-          - name: administrators # Role do cluster para usuários administradores
-            rules: # Regras específicas para administradores neste cluster
-              - resources: # Recursos permitidos para administradores
-                  - topics # Permite visualizar/listar tópicos
-                  - topics/records # Permite visualizar registros/mensagens dos tópicos
-                  - consumerGroups # Permite visualizar consumer groups
-                  - rebalances # Permite visualizar operações de rebalance
-                  - nodes # Tentativa de liberar acesso à tela/lista de nodes
-                  - nodes/configs # Permite visualizar configurações/informações de nodes
-                privileges: # Privilégios concedidos aos resources acima
-                  - GET # Permite consultar detalhes de um recurso específico
-                  - LIST # Permite listar coleções de recursos
-              - resources: # Regra separada para ações administrativas
-                  - consumerGroups # Recurso de consumer groups
-                  - rebalances # Recurso de rebalance
-                privileges: # Privilégios concedidos para esses recursos
-                  - UPDATE # Permite executar alterações/ações administrativas nesses recursos
-=======
   kafkaClusters:
     - name: kafka-cluster
       namespace: kafka
@@ -119,7 +62,6 @@ spec:
       credentials:
         kafkaUser:
           name: app-user
->>>>>>> 55d99e0 (fix)
 
       security:
         roles:
