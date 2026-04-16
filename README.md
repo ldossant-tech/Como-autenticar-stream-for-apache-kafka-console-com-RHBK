@@ -324,4 +324,4 @@ Verifique:
 # Referências
 
 - [Using the Streams for Apache Kafka Console](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index)
-- [Deploying and connecting the console to a Kafka cluster](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index#proc-connecting-console-str)
+- [Using an OIDC provider to secure access to Kafka clusters](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/3.1/html-single/using_the_streams_for_apache_kafka_console/index#ref-authentication-options-str)
