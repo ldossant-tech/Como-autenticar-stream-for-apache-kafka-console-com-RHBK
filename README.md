@@ -179,7 +179,7 @@ Cadastre a URI de callback usada pelo Console.
 ## Exemplo
 
 ```text
-https://my-console.apps.exemplo.com/api/auth/callback/oidc
+https://my-console.apps.exemplo.com/api/*
 ```
 
 O RHBK faz comparação exata e sensível a maiúsculas/minúsculas para `Valid Redirect URIs`, então evite curingas muito amplos em produção [Source](https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak/26.4/html/server_administration_guide/assembly-managing-clients_server_administration_guide)
